@@ -20,4 +20,6 @@ venv/
 # Other
 *.log
 *.sqlite
+*.db
+uploads
 *.swp

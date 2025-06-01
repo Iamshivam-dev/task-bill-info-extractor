@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE:-Dockerfile.prod}  # Use env variable to pick the Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/uploads
+      - ./receipts.db:/receipts.db 
+      # - .:/app # Use it for dev hot reload
+    environment:
+      - ENV=${ENV:-prod}  # Default to dev mode
