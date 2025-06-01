@@ -7,7 +7,7 @@ services:
       - "8000:8000"
     volumes:
       - ./uploads:/uploads
-      - ./receipts.db:/receipts.db 
+      - ./receipts.db:/receipts.db:rw
       # - .:/app # Use it for dev hot reload
     environment:
       - ENV=${ENV:-prod}  # Default to dev mode
