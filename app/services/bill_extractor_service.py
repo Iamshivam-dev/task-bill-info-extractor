@@ -37,7 +37,6 @@ class BillExtractorService:
 
         word_scores = Counter()
         word_counts = Counter(words)
-        print(words)
         
         for i, word in enumerate(words):
             lenword = len(word)
@@ -70,8 +69,6 @@ class BillExtractorService:
                 score += score_boost * 1  # we give extra score if lenght is more than 3 as most brand might have
 
             
-            if word == "CHARGE":
-                print(f"So far score for charge {score} /// {score_boost}")
             # Check for bigrams and trigrams where all words have capital first letters
             if i + 1 < len(words) and words[i][0].isupper() and words[i + 1][0].isupper():
                 bigram = f"{words[i]} {words[i + 1]}"
@@ -112,7 +109,6 @@ class BillExtractorService:
 
         best_candidate = None
         best_score = -1
-        print(score_dict)
         for candidate in brand_names:
             candidate_lower = candidate.lower()
             candidate_score = score_dict.get(candidate_lower, 0)
@@ -246,10 +242,6 @@ class BillExtractorService:
             if total_amount:
                 break
             
-        print(f"Merchant::: {merchant_name}")
-        print(f"purchase at ::: ")
-        print(purchased_at)
-        print(f"total ::: {total_amount}")
         session = Session(bind=engine)
         new_receipt = Receipt(
             merchant_name=merchant_name,
@@ -264,7 +256,8 @@ class BillExtractorService:
     
     def getReceipt(self, id:int):
         db_receipt = self.db.query(Receipt).filter(Receipt.id == id).first()
-        print(db_receipt.purchased_at)
+        if not db_receipt:
+            raise HTTPException(status_code=404, detail="Receipt not found")
         return db_receipt
     
     def receipts(self):
